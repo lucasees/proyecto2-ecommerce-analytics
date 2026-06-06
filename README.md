@@ -45,6 +45,3 @@ Lucas Espinosa. Data Analyst
 - `sql/` - Queries SQL del análisis
 - `dashboard/` - Capturas del dashboard
 
-## Contacto
-**Lucas Espinosa** - Data Analyst  
-[LinkedIn](https://linkedin.com/in/lucasespinosaa) · lucaseespinosa93@gmail.com · [github.com/lucasees](https://github.com/lucasees)
