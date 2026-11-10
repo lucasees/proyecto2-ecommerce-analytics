@@ -1,17 +1,18 @@
-# E-Commerce Analytics con GA4 + BigQuery 📊
+# E-Commerce Analytics con BigQuery — Google Merchandise Store 📊
 
 ## Descripción
-Análisis de datos reales de la Google Merchandise Store usando Google Analytics 4 
-y BigQuery. El objetivo es extraer insights de negocio sobre conversión, canales 
+Análisis de datos reales de la Google Merchandise Store con SQL en BigQuery, sobre el
+dataset público de Google Analytics. El objetivo es extraer insights de negocio sobre conversión, canales 
 de adquisición, comportamiento por dispositivo y tendencias de ventas.
 
 ## Dataset
-Google Analytics Sample Dataset (BigQuery Public Data)
+Google Analytics Sample Dataset (BigQuery Public Data: `bigquery-public-data.google_analytics_sample`)
+- Datos de Universal Analytics, la versión de Google Analytics anterior a GA4
 - Período: Agosto 2016 - Agosto 2017
 - 903.653 sesiones · 714.167 visitantes únicos · 12.115 transacciones
 
 ## Herramientas
-- **BigQuery** - Consultas SQL sobre datos de GA4
+- **BigQuery** - Consultas SQL sobre el dataset de Google Analytics
 - **Looker Studio** - Dashboard interactivo
 - **VS Code** - Edición y organización del código SQL
 
@@ -35,13 +36,13 @@ Google Analytics Sample Dataset (BigQuery Public Data)
 8. Top productos más vendidos
 
 ## Dashboard
-[Ver dashboard interactivo en Looker Studio] https://datastudio.google.com/reporting/5c01e3ab-974f-4cd7-af91-0d93c1a211b3
+[Ver dashboard interactivo en Looker Studio](https://datastudio.google.com/reporting/5c01e3ab-974f-4cd7-af91-0d93c1a211b3)
 
 contacto:
 Lucas Espinosa. Data Analyst
 [LinkedIn](https://linkedin.com/in/lucasespinosaa) · lucaseespinosa93@gmail.com · [github.com/lucasees](https://github.com/lucasees)
 
 ## Estructura del proyecto
-- `sql/` - Queries SQL del análisis
-- `dashboard/` - Capturas del dashboard
+- `SQL/` - Queries SQL del análisis
+- `dashboard/` - Enlace al dashboard de Looker Studio
 

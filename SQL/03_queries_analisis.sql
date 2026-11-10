@@ -1,6 +1,6 @@
 -- =============================================
--- PROYECTO 2: E-COMMERCE ANALYTICS CON GA4
--- Dataset: Google Merchandise Store
+-- PROYECTO 2: E-COMMERCE ANALYTICS CON BIGQUERY
+-- Dataset: Google Merchandise Store (Google Analytics sample, Universal Analytics 2016-2017)
 -- Herramienta: BigQuery
 -- Autor: Lucas Espinosa
 -- =============================================
