@@ -3,6 +3,11 @@
 -- Dataset: Google Merchandise Store (Google Analytics sample, Universal Analytics 2016-2017)
 -- Herramienta: BigQuery
 -- Autor: Lucas Espinosa
+--
+-- Definiciones usadas en todo el archivo:
+--   tasa_conversion_pct     = transacciones / sesiones x 100
+--   pct_sesiones_con_compra = sesiones con al menos una compra / sesiones x 100
+--   Los ingresos de Universal Analytics vienen en micros (x 1.000.000).
 -- =============================================
 
 
@@ -43,9 +48,11 @@ SELECT
     ROUND(SUM(totals.pageviews)/COUNT(*),1)             AS paginas_por_sesion,
     COUNTIF(totals.transactions > 0)                    AS sesiones_con_compra,
     ROUND(COUNTIF(totals.transactions>0)*100.0/
+        COUNT(*),2)                                     AS pct_sesiones_con_compra,
+    ROUND(SUM(totals.transactions)*100.0/
         COUNT(*),2)                                     AS tasa_conversion_pct,
     ROUND(SUM(totals.transactionRevenue)/1000000/
-        COUNTIF(totals.transactions>0),2)               AS ticket_promedio_usd
+        COUNTIF(totals.transactions>0),2)               AS ticket_promedio_por_sesion_con_compra_usd
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`
 WHERE _TABLE_SUFFIX BETWEEN '20160801' AND '20170801';
 
@@ -56,9 +63,10 @@ WHERE _TABLE_SUFFIX BETWEEN '20160801' AND '20170801';
 SELECT
     device.deviceCategory                              AS dispositivo,
     COUNT(*)                                           AS sesiones,
-    COUNTIF(totals.transactions > 0)                   AS transacciones,
+    SUM(totals.transactions)                           AS transacciones,
+    COUNTIF(totals.transactions > 0)                   AS sesiones_con_compra,
     ROUND(SUM(totals.transactionRevenue)/1000000,2)    AS ingresos_usd,
-    ROUND(COUNTIF(totals.transactions>0)*100.0/
+    ROUND(SUM(totals.transactions)*100.0/
         COUNT(*),2)                                    AS tasa_conversion_pct
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`
 WHERE _TABLE_SUFFIX BETWEEN '20160801' AND '20170801'
@@ -72,10 +80,10 @@ ORDER BY ingresos_usd DESC;
 SELECT
     FORMAT_DATE('%Y-%m', PARSE_DATE('%Y%m%d', date))   AS mes,
     COUNT(*)                                            AS sesiones,
-    COUNTIF(totals.transactions > 0)                    AS transacciones,
+    COUNTIF(totals.transactions > 0)                    AS sesiones_con_compra,
     ROUND(SUM(totals.transactionRevenue)/1000000,2)     AS ingresos_usd,
     ROUND(SUM(totals.transactionRevenue)/1000000/
-        COUNTIF(totals.transactions>0),2)               AS ticket_promedio
+        COUNTIF(totals.transactions>0),2)               AS ticket_promedio_por_sesion_con_compra_usd
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`
 WHERE _TABLE_SUFFIX BETWEEN '20160801' AND '20170801'
 GROUP BY mes
@@ -84,6 +92,9 @@ ORDER BY mes;
 
 -- =============================================
 -- QUERY 6: Analisis de cohortes
+-- Cohorte = mes de la primera visita dentro del periodo analizado.
+-- Ojo: la cohorte de 2016-08 incluye a visitantes que ya venian de antes
+-- del inicio de los datos (efecto de borde), asi que sale inflada.
 -- =============================================
 WITH primera_visita AS (
     SELECT
@@ -112,6 +123,8 @@ SELECT
     COUNT(DISTINCT fullVisitorId)               AS usuarios_cohorte,
     SUM(transacciones)                          AS compras_totales,
     ROUND(SUM(transacciones)*100.0/
+        COUNT(DISTINCT fullVisitorId),2)        AS compras_por_100_usuarios,
+    ROUND(COUNT(DISTINCT IF(transacciones > 0, fullVisitorId, NULL))*100.0/
         COUNT(DISTINCT fullVisitorId),2)        AS pct_compradores
 FROM visitas_con_cohort
 GROUP BY mes_adquisicion
@@ -123,16 +136,16 @@ ORDER BY mes_adquisicion;
 -- =============================================
 SELECT
     hits.page.pagePath                          AS pagina,
-    COUNT(*)                                    AS visitas,
-    COUNTIF(totals.transactions > 0)            AS sesiones_con_compra,
+    COUNT(*)                                    AS paginas_vistas,
+    COUNTIF(totals.transactions > 0)            AS vistas_en_sesiones_con_compra,
     ROUND(COUNTIF(totals.transactions>0)*100.0/
-        COUNT(*),2)                             AS conversion_pct
+        COUNT(*),2)                             AS pct_vistas_en_sesiones_con_compra
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`,
     UNNEST(hits) AS hits
 WHERE _TABLE_SUFFIX BETWEEN '20160801' AND '20170801'
     AND hits.type = 'PAGE'
 GROUP BY pagina
-ORDER BY visitas DESC
+ORDER BY paginas_vistas DESC
 LIMIT 10;
 
 

@@ -18,11 +18,11 @@ Google Analytics Sample Dataset (BigQuery Public Data: `bigquery-public-data.goo
 
 ## Hallazgos principales
 - Ingresos totales: **$1.540.071 USD**
-- Tasa de conversión general: **1.28%**
-- Ticket promedio: **$133.32 USD**
-- Canal más rentable: **Referral** (5.29% conversión, $651.429 ingresos)
+- Tasa de conversión general: **1,34%** (transacciones / sesiones); el **1,28%** de las sesiones termina en al menos una compra
+- Ticket promedio: **$133.32 USD** por sesión con compra
+- Canal más rentable: **Referral** (5,29% de conversión, con la misma definición; $651.429 de ingresos)
 - Desktop genera **96% de los ingresos** vs 3.2% mobile
-- Cohorte más valiosa: **agosto 2016** (2.81% compradores)
+- Cohortes: la de **agosto 2016** registra 2,81 compras por cada 100 usuarios, aunque sale inflada por un efecto de borde (incluye a visitantes previos al inicio de los datos)
 - Producto estrella: **Google Men's Zip Hoodie** ($47.636 ingresos)
 
 ## Análisis realizados
